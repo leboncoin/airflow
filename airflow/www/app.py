@@ -18,6 +18,7 @@
 # under the License.
 #
 import logging
+import os
 from typing import Any
 
 import six
@@ -46,6 +47,7 @@ log = logging.getLogger(__name__)
 
 
 def create_app(config=None, testing=False):
+
     app = Flask(__name__)
     if conf.getboolean('webserver', 'ENABLE_PROXY_FIX'):
         app.wsgi_app = ProxyFix(
@@ -59,6 +61,12 @@ def create_app(config=None, testing=False):
     app.secret_key = conf.get('webserver', 'SECRET_KEY')
     app.config['LOGIN_DISABLED'] = not conf.getboolean(
         'webserver', 'AUTHENTICATE')
+
+    if configuration.conf.get('webserver', 'SECRET_KEY') == "temporary_key":
+        log.info("SECRET_KEY for Flask App is not specified. Using a random one.")
+        app.secret_key = os.urandom(16)
+    else:
+        app.secret_key = configuration.conf.get('webserver', 'SECRET_KEY')
 
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = conf.getboolean('webserver', 'COOKIE_SECURE')
