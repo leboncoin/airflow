@@ -19,6 +19,7 @@
 #
 import logging
 import socket
+import os
 from datetime import timedelta
 from typing import Any
 
@@ -63,6 +64,11 @@ def create_app(config=None, session=None, testing=False, app_name="Airflow"):
 
     session_lifetime_days = conf.getint('webserver', 'SESSION_LIFETIME_DAYS', fallback=30)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=session_lifetime_days)
+
+    if conf.get('webserver', 'SECRET_KEY') == "temporary_key":
+        app.secret_key = os.urandom(16)
+    else:
+        app.secret_key = conf.get('webserver', 'SECRET_KEY')
 
     app.config.from_pyfile(settings.WEBSERVER_CONFIG, silent=True)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
