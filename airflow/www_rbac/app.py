@@ -60,15 +60,11 @@ def create_app(config=None, session=None, testing=False, app_name="Airflow"):
             x_port=conf.getint("webserver", "PROXY_FIX_X_PORT", fallback=1),
             x_prefix=conf.getint("webserver", "PROXY_FIX_X_PREFIX", fallback=1)
         )
-    app.secret_key = conf.get('webserver', 'SECRET_KEY')
 
     session_lifetime_days = conf.getint('webserver', 'SESSION_LIFETIME_DAYS', fallback=30)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=session_lifetime_days)
 
-    if conf.get('webserver', 'SECRET_KEY') == "temporary_key":
-        app.secret_key = os.urandom(16)
-    else:
-        app.secret_key = conf.get('webserver', 'SECRET_KEY')
+    app.secret_key = conf.get('webserver', 'SECRET_KEY')
 
     app.config.from_pyfile(settings.WEBSERVER_CONFIG, silent=True)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
