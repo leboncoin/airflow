@@ -37,6 +37,7 @@ from urllib3.exceptions import HTTPError, ReadTimeoutError
 from airflow import settings
 from airflow.configuration import conf
 from airflow.exceptions import AirflowConfigException, AirflowException
+from airflow.kubernetes.istio import Istio
 from airflow.executors.base_executor import BaseExecutor
 from airflow.kubernetes import pod_generator
 from airflow.kubernetes.kube_client import get_kube_client
@@ -292,6 +293,7 @@ class KubernetesJobWatcher(multiprocessing.Process, LoggingMixin):
         self.watcher_queue = watcher_queue
         self.resource_version = resource_version
         self.kube_config = kube_config
+        self.istio = Istio(get_kube_client())
 
     def run(self):
         """Performs watching"""
@@ -373,6 +375,7 @@ class KubernetesJobWatcher(multiprocessing.Process, LoggingMixin):
                 event=event,
             )
             last_resource_version = task.metadata.resource_version
+            self.istio.handle_istio_proxy(task)
 
         return last_resource_version
 
