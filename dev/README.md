@@ -135,11 +135,13 @@ The release signing tool can be used to create the SHA512/MD5 and ASC files that
 ### Execution
 To create a release tar ball execute following command from Airflow's root. 
 
-`python setup.py compile_assets sdist --formats=gztar`
+```bash
+python setup.py compile_assets sdist --formats=gztar
+```
 
-*Note: `compile_assets` command build the frontend assets (JS and CSS) files for the 
-Web UI using webpack and npm. Please make sure you have `npm` installed on your local machine globally.
-Details on how to install `npm` can be found in CONTRIBUTING.rst file.*
+*Note: `compile_assets` command build the frontend assets (JS and CSS) files for the
+Web UI using webpack and yarn. Please make sure you have `yarn` installed on your local machine globally.
+Details on how to install `yarn` can be found in CONTRIBUTING.rst file.*
 
 After that navigate to relative directory i.e., `cd dist` and sign the release files.
 

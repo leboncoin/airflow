@@ -67,7 +67,7 @@ if [[ ! -d "${AIRFLOW_SOURCES}/airflow/www_rbac/node_modules" && "${CLEAN_FILES}
     echo "Installing NPM modules as they are not yet installed (sources are mounted from the host)"
     echo
     pushd "${AIRFLOW_SOURCES}/airflow/www_rbac/"
-    npm ci
+    yarn install --frozen-lockfile
     echo
     popd
 fi
@@ -77,7 +77,7 @@ if [[ ! -d "${AIRFLOW_SOURCES}/airflow/www_rbac/static/dist" && ${CLEAN_FILES} =
     echo "Building production version of javascript files (sources are mounted from the host)"
     echo
     echo
-    npm run prod
+    yarn run prod
     echo
     echo
     popd
@@ -89,10 +89,10 @@ RUN_TESTS=${RUN_TESTS:="true"}
 
 if [[ ! -d "${AIRFLOW_SOURCES}/airflow/www_rbac/node_modules" ]]; then
     echo
-    echo "Installing NPM modules as they are not yet installed (Sources mounted from Host)"
+    echo "Installing node modules as they are not yet installed (Sources mounted from Host)"
     echo
-    pushd "${AIRFLOW_SOURCES}/airflow/www_rbac/" &>/dev/null || exit 1
-    npm ci
+    pushd "${AIRFLOW_SOURCES}/airflow/www/" &>/dev/null || exit 1
+    yarn install --frozen-lockfile
     echo
     popd &>/dev/null || exit 1
 fi
@@ -102,7 +102,7 @@ if [[ ! -d "${AIRFLOW_SOURCES}/airflow/www_rbac/static/dist" ]]; then
     echo "Building production version of javascript files (Sources mounted from Host)"
     echo
     echo
-    npm run prod
+    yarn run prod
     echo
     echo
     popd &>/dev/null || exit 1
