@@ -208,13 +208,11 @@ RUN curl -Lo kind \
 
 ARG RAT_VERSION="0.13"
 
-ENV RAT_VERSION="${RAT_VERSION}" \
-    RAT_JAR="/opt/apache-rat-${RAT_VERSION}.jar" \
-    RAT_URL="https://repo1.maven.org/maven2/org/apache/rat/apache-rat/${RAT_VERSION}/apache-rat-${RAT_VERSION}.jar"
-ENV RAT_JAR_MD5="${RAT_JAR}.md5" \
-    RAT_URL_MD5="${RAT_URL}.md5"
-
-RUN echo "Downloading RAT from ${RAT_URL} to ${RAT_JAR}" \
+RUN  RAT_URL="https://repo1.maven.org/maven2/org/apache/rat/apache-rat/${RAT_VERSION}/apache-rat-${RAT_VERSION}.jar" \
+    && RAT_JAR="/opt/apache-rat.jar" \
+    && RAT_JAR_MD5="${RAT_JAR}.md5" \
+    && RAT_URL_MD5="${RAT_URL}.md5" \
+    && echo "Downloading RAT from ${RAT_URL} to ${RAT_JAR}" \
     && curl -sL "${RAT_URL}" > "${RAT_JAR}" \
     && curl -sL "${RAT_URL_MD5}" > "${RAT_JAR_MD5}" \
     && jar -tf "${RAT_JAR}" >/dev/null \
