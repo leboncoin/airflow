@@ -53,6 +53,9 @@ export WEBSERVER_HOST_PORT=${WEBSERVER_HOST_PORT:="28080"}
 export POSTGRES_HOST_PORT=${POSTGRES_HOST_PORT:="25433"}
 export MYSQL_HOST_PORT=${MYSQL_HOST_PORT:="23306"}
 
+# Default MySQL/Postgres versions
+export POSTGRES_VERSION=${POSTGRES_VERSION:="9.6"}
+
 # Do not push images from here by default (push them directly from the build script on Dockerhub)
 export AIRFLOW_CONTAINER_PUSH_IMAGES=${AIRFLOW_CONTAINER_PUSH_IMAGES:="false"}
 

@@ -19,7 +19,7 @@ version: "2.2"
 services:
 
   postgres:
-    image: postgres:9.6
+    image: postgres:${POSTGRES_VERSION}
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=airflow

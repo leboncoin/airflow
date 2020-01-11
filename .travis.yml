@@ -45,19 +45,34 @@ jobs:
       script: ./scripts/ci/ci_docs.sh
       env: >-
         PYTHON_VERSION=3.5
-    - name: "Tests postgres python 3.6"
+    - name: "Tests [Postgres9.6][Py3.6][integrations]"
       env: >-
         BACKEND=postgres
         ENV=docker
         PYTHON_VERSION=3.6
+        POSTGRES_VERSION=9.6
       stage: test
-    - name: "Tests sqlite python 3.5"
+    - name: "Tests [Postgres10][Py3.6]"
+      env: >-
+        BACKEND=postgres
+        ENV=docker
+        PYTHON_VERSION=3.6
+        POSTGRES_VERSION=10
+      stage: test
+    - name: "Tests [Postgres12.2][Py3.6]"
+      env: >-
+        BACKEND=postgres
+        ENV=docker
+        PYTHON_VERSION=3.6
+        POSTGRES_VERSION=12.2
+      stage: test
+    - name: "Tests [Sqlite][Py3.5]"
       env: >-
         BACKEND=sqlite
         ENV=docker
         PYTHON_VERSION=3.5
       stage: test
-    - name: "Tests postgres kubernetes python 3.6 (persistent)"
+    - name: "Tests [Postgres9.6][Kubernetes][Py3.6][persistent]"
       env: >-
         BACKEND=postgres
         ENV=kubernetes
@@ -67,7 +82,7 @@ jobs:
         PYTHON_VERSION=3.6
       stage: test
       script: travis_wait 30 "./scripts/ci/ci_run_airflow_testing.sh"
-    - name: "Tests postgres kubernetes python 3.6 (git)"
+    - name: "Tests [Postgres9.6][Kubernetes][Py3.6][git]"
       env: >-
         BACKEND=postgres
         ENV=kubernetes
