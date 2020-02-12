@@ -65,3 +65,6 @@ PULL_REQUEST_TEMPLATE.md
 
 # vendored modules
 _vendor/*
+
+# Astronomer extension scripts
+astronomer-*.sh
