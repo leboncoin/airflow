@@ -1001,7 +1001,7 @@ ${{ hashFiles('.pre-commit-config.yaml') }}"
       - docs
     # TODO: Generalize me (find a better way to select matching branches)
     if: >
-      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/v2-1-1') &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2-1-3') &&
       github.event_name != 'schedule'
     strategy:
       matrix:
@@ -1059,7 +1059,7 @@ ${{ hashFiles('.pre-commit-config.yaml') }}"
       - docs
     # TODO: Generalize me (find a better way to select matching branches)
     if: >
-      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/v2-1-1' ) &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2-1-3' ) &&
       github.event_name != 'schedule'
     strategy:
       matrix:
@@ -1245,7 +1245,7 @@ ${{ hashFiles('.pre-commit-config.yaml') }}"
       - tests-mysql
       - docs
     if: |
-      (startsWith(github.ref, 'refs/tags/v2.1.1+astro') || github.ref == 'refs/heads/v2-1-1') &&
+      (startsWith(github.ref, 'refs/tags/v2.1.3+astro') || github.ref == 'refs/heads/v2-1-3') &&
       github.event_name != 'pull_request'
     env:
       PULL_PYTHON_BASE_IMAGES_FROM_CACHE: "false"
