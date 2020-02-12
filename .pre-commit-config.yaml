@@ -162,7 +162,7 @@ repos:
         name: Check yaml files with yamllint
         entry: yamllint -c yamllint-config.yml
         types: [yaml]
-        exclude: ^.*init_git_sync\.template\.yaml$|^.*airflow\.template\.yaml$|^chart/templates/.*\.yaml$
+        exclude: ^.*init_git_sync\.template\.yaml$|^.*airflow\.template\.yaml$|^chart/templates/.*\.yaml$|^.github/workflows/ci.yml$   # yamllint disable-line rule:line-length
     ##
     ## Dear committer.
     ##
@@ -319,14 +319,14 @@ repos:
         language: system
         entry: "./scripts/ci/pre_commit/pre_commit_mypy.sh"
         files: \.py$
-        exclude: ^dev
+        exclude: ^dev|astronomer-certified-setup.py
         require_serial: true
       - id: flake8
         name: Run flake8
         language: system
         entry: "./scripts/ci/pre_commit/pre_commit_flake8.sh"
         files: \.py$
-        exclude: ^dev
+        exclude: ^dev|astronomer-certified-setup.py
         pass_filenames: true
       - id: bat-tests
         name: Run BATS bash tests for changed bash files
