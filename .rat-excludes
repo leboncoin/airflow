@@ -104,3 +104,7 @@ _vendor
 
 # generated provider_packages
 provider_packages
+
+# Astronomer extension scripts
+astronomer-*.sh
+astronomer-certified-setup.py
