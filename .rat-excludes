@@ -118,3 +118,6 @@ scripts/ci/docker-compose/_docker_compose.env
 airflow/www/static/robots.txt
 # Auto-generated files
 scripts/ci/installed_providers.txt
+# Astronomer extension scripts
+astronomer-*.sh
+astronomer-certified-setup.py
