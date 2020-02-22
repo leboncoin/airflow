@@ -29,6 +29,7 @@ graft airflow/www_rbac/templates
 graft airflow/www_rbac/translations
 graft airflow/_vendor/
 include airflow/alembic.ini
+include airflow/git_version
 graft scripts/systemd
 graft scripts/upstart
 graft airflow/config_templates
