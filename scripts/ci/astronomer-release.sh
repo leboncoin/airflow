@@ -17,7 +17,10 @@ basic_sanity_checks
 
 script_start
 
-python3 setup.py --quiet verify compile_assets sdist bdist_wheel
+python3 setup.py --quiet verify compile_assets sdist --dist-dir dist/apache-airflow/ bdist_wheel --dist-dir dist/apache-airflow/
+
+# Build the astronomer-certified release from the matching apache-airflow wheel file
+python3 astronomer-certified-setup.py bdist_wheel  --dist-dir dist/astronomer-certified dist/apache-airflow/apache_airflow-*.whl
 
 ls -altr dist/*
 
