@@ -61,6 +61,10 @@ https://developers.google.com/style/inclusive-documentation
 
 ## Airflow 1.10.10
 
+### Use NULL as default value for dag.description
+
+Now use NULL as default value for dag.description in dag table
+
 ### Setting Empty string to a Airflow Variable will return an empty string
 
 Previously when you set an Airflow Variable with an empty string (`''`), the value you used to get
