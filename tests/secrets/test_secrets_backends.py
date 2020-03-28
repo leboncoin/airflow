@@ -42,8 +42,8 @@ class SampleConn:
 class TestBaseSecretsBackend(unittest.TestCase):
 
     @parameterized.expand([
-        ('default', {"connections_prefix": "PREFIX", "conn_id": "ID"}, "PREFIX/ID"),
-        ('with_sep', {"connections_prefix": "PREFIX", "conn_id": "ID", "sep": "-"}, "PREFIX-ID")
+        ('default', {"path_prefix": "PREFIX", "secret_id": "ID"}, "PREFIX/ID"),
+        ('with_sep', {"path_prefix": "PREFIX", "secret_id": "ID", "sep": "-"}, "PREFIX-ID")
     ])
     def test_build_path(self, _, kwargs, output):
         build_path = BaseSecretsBackend.build_path
