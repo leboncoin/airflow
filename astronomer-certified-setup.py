@@ -85,6 +85,7 @@ setup(
     url='https://www.astronomer.io/docs/ac-local/',
     install_requires=[
         'apache-airflow==' + airflow_version,
+        'astronomer-airflow-version-check~=1.0',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
