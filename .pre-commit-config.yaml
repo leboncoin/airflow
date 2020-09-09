@@ -100,7 +100,7 @@ repos:
       - id: insert-license
         name: Add license for all XML files
         exclude: ^\.github/.*$"|^airflow/_vendor/.*$
-        types: [xml]
+        files: .*\.xml$
         args:
           - --comment-style
           - "<!--||-->"
