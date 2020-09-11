@@ -159,6 +159,7 @@ jobs:
         - |-
           if [[ ! -d "pip-release-utilities" ]]; then
             git clone https://github.com/astronomer/pip-release-utilities.git
+            pip install gitpython
             "./scripts/ci/astronomer-release.sh"
             openssl aes-256-cbc \
               -K $encrypted_e97c699094fd_key \
