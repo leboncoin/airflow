@@ -452,7 +452,7 @@ devel = [
     'jira',
     'mock;python_version<"3.3"',
     'mongomock',
-    'moto>=1.3.14,<2.0.0',
+    'moto==1.3.14',
     'parameterized',
     'paramiko',
     'pre-commit',
