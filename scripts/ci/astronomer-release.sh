@@ -6,11 +6,11 @@
 export PYTHON_VERSION=3.6
 
 # shellcheck source=scripts/ci/libraries/_script_init.sh
-. "$( dirname "${BASH_SOURCE[0]}" )/../libraries/_script_init.sh"
+. "$( dirname "${BASH_SOURCE[0]}" )/libraries/_script_init.sh"
 
 # shellcheck disable=SC2153
 export TAG=${GITHUB_REF/refs\/tags\//}
-if [[ $TAG != *"tags"* ]]; then
+if [[ "$GITHUB_REF" != *"tags"* ]]; then
   export TAG=""
 fi
 echo "TAG: $TAG"
