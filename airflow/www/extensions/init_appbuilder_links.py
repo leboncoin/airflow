@@ -28,3 +28,22 @@ def init_appbuilder_links(app):
         "REST API Reference (Swagger UI)", href='/api/v1./api/v1_swagger_ui_index', category="Docs"
     )
     appbuilder.add_link("REST API Reference (Redoc)", href="RedocView.redoc", category='Docs')
+
+    appbuilder.add_link(
+        name="Astronomer",
+        label="Astronomer Docs",
+        href='https://www.astronomer.io/docs',
+        category="Astronomer",
+    )
+    appbuilder.add_link(
+        name="Astronomer",
+        label="Astronomer Registry",
+        href='https://registry.astronomer.io',
+        category="Astronomer",
+    )
+    appbuilder.add_link(
+        name="Astronomer",
+        label="Airflow Guides",
+        href='https://www.astronomer.io/guides',
+        category="Astronomer",
+    )
