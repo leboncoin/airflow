@@ -348,7 +348,7 @@ jobs:
     name: "Build docs"
     runs-on: ubuntu-20.04
     needs: [build-info, ci-images]
-    if: needs.build-info.outputs.docs-build == 'true'
+    if: needs.build-info.outputs.docs-build == 'true' && github.repository == 'apache/airflow'
     steps:
       - name: "Checkout ${{ github.ref }} ( ${{ github.sha }} )"
         uses: actions/checkout@v2
