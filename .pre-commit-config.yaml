@@ -663,7 +663,7 @@ repos:
         entry: ./scripts/ci/pre_commit/pre_commit_flake8.sh
         files: \.py$
         pass_filenames: true
-        exclude: ^airflow/_vendor/
+        exclude: ^airflow/_vendor/|^astronomer-certified-setup.py
       - id: ui-lint
         name: ESLint against airflow/ui
         language: node
