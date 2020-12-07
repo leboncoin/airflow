@@ -1383,8 +1383,9 @@ class TestTaskInstance(unittest.TestCase):
 
         callback_wrapper.wrap_task_instance(ti)
         ti._run_raw_task()
+        ti._run_finished_callback()
         self.assertTrue(callback_wrapper.callback_ran)
-        self.assertEqual(callback_wrapper.task_state_in_callback, State.RUNNING)
+        self.assertEqual(callback_wrapper.task_state_in_callback, State.SUCCESS)
         ti.refresh_from_db()
         self.assertEqual(ti.state, State.SUCCESS)
 
@@ -1626,6 +1627,7 @@ class TestTaskInstance(unittest.TestCase):
         ti1 = TI(task=task1, execution_date=start_date)
         ti1.state = State.FAILED
         ti1.handle_failure("test failure handling")
+        ti1._run_finished_callback()
 
         context_arg_1 = mock_on_failure_1.call_args[0][0]
         assert context_arg_1 and "task_instance" in context_arg_1
@@ -1643,6 +1645,7 @@ class TestTaskInstance(unittest.TestCase):
         ti2 = TI(task=task2, execution_date=start_date)
         ti2.state = State.FAILED
         ti2.handle_failure("test retry handling")
+        ti2._run_finished_callback()
 
         mock_on_failure_2.assert_not_called()
 
@@ -1662,6 +1665,7 @@ class TestTaskInstance(unittest.TestCase):
         ti3 = TI(task=task3, execution_date=start_date)
         ti3.state = State.FAILED
         ti3.handle_failure("test force_fail handling", force_fail=True)
+        ti3._run_finished_callback()
 
         context_arg_3 = mock_on_failure_3.call_args[0][0]
         assert context_arg_3 and "task_instance" in context_arg_3
