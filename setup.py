@@ -604,6 +604,7 @@ INSTALL_REQUIREMENTS = [
     'jsonschema~=3.0',
     'lazy_object_proxy~=1.3',
     'markdown>=2.5.2, <3.0',
+    'marshmallow<=2.21.0',
     'marshmallow-sqlalchemy>=0.16.1, <0.19.0;python_version<"3.6"',
     # marshmallow-sqlalchemy>=0.24 needs marshmallow > 3 which causes conflicts with FAB
     'marshmallow-sqlalchemy==0.23.0;python_version>="3.6"',
