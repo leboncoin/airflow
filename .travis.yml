@@ -42,11 +42,6 @@ jobs:
       env: >-
         AIRFLOW_MOUNT_SOURCE_DIR_FOR_STATIC_CHECKS="true"
         PYTHON_VERSION=3.6
-    - name: "Build documentation"
-      stage: pre-test
-      script: ./scripts/ci/ci_docs.sh
-      env: >-
-        PYTHON_VERSION=3.5
     - name: "Tests [Postgres9.6][Py3.6][integrations]"
       env: >-
         BACKEND=postgres
