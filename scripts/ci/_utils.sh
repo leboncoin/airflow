@@ -43,7 +43,7 @@ function verbose_docker {
 # Common environment that is initialized by both Breeze and CI scripts
 function initialize_common_environment {
     # default python version
-    PYTHON_MAJOR_MINOR_VERSION=${PYTHON_MAJOR_MINOR_VERSION:="3.5"}
+    PYTHON_MAJOR_MINOR_VERSION=${PYTHON_MAJOR_MINOR_VERSION:="3.6"}
 
     AIRFLOW_SOURCES=${AIRFLOW_SOURCES:=$(cd "${MY_DIR}/../../" && pwd)}
     export AIRFLOW_SOURCES
