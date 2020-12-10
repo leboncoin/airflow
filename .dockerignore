@@ -59,6 +59,7 @@
 # Setup/version configuration
 !setup.cfg
 !setup.py
+!constraints.txt
 
 # Entrypoint script
 !scripts/docker/entrypoint.sh
