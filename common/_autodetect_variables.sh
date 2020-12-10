@@ -65,7 +65,7 @@ export AIRFLOW_CONTAINER_BRANCH_NAME=${AIRFLOW_CONTAINER_BRANCH_NAME:=${SOURCE_B
 # PYTHON_VERSION from the IMAGE_NAME set in the DockerHub build.
 # See comment above in PYTHON_VERSION - we will be able to get rid of this cumbersomness when we switch
 # to a different CI system and start pushing images to DockerHub rather than build it there.
-export BASE_IMAGE_NAME=${IMAGE_NAME:=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${AIRFLOW_CONTAINER_BRANCH_NAME}-python${PYTHON_VERSION:-3.5}}
+export BASE_IMAGE_NAME=${IMAGE_NAME:=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${AIRFLOW_CONTAINER_BRANCH_NAME}-python${PYTHON_VERSION:-3.6}}
 
 # Remove index.docker.io/ prefix as it is added by default by DockerHub
 export LOCAL_BASE_IMAGE_NAME=${BASE_IMAGE_NAME#index.docker.io/}
