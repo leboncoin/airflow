@@ -63,11 +63,11 @@ jobs:
         PYTHON_VERSION=3.6
         POSTGRES_VERSION=12.2
       stage: test
-    - name: "Tests [Sqlite][Py3.5]"
+    - name: "Tests [Sqlite][Py3.6]"
       env: >-
         BACKEND=sqlite
         ENV=docker
-        PYTHON_VERSION=3.5
+        PYTHON_VERSION=3.6
       stage: test
     - name: "Tests [Postgres9.6][Kubernetes][Py3.6][persistent]"
       env: >-

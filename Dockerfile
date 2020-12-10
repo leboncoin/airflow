@@ -318,7 +318,8 @@ COPY airflow/bin/airflow ${AIRFLOW_SOURCES}/airflow/bin/airflow
 # The goal of this line is to install the dependencies from the most current setup.py from sources
 # This will be usually incremental small set of packages in CI optimized build, so it will be very fast
 # In non-CI optimized build this will install all dependencies before installing sources.
-RUN pip install -e ".[${AIRFLOW_EXTRAS}]"
+RUN pip install -e ".[${AIRFLOW_EXTRAS}]" \
+    -c https://raw.githubusercontent.com/astronomer/ap-airflow/master/1.10.5/buster/include/pip-constraints.txt
 
 WORKDIR ${AIRFLOW_SOURCES}/airflow/www_rbac
 
