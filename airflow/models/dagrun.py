@@ -430,7 +430,7 @@ class DagRun(Base, LoggingMixin):
             self.set_state(State.FAILED)
             if execute_callbacks:
                 dag.handle_callback(self, success=False, reason='task_failure', session=session)
-            else:
+            elif dag.on_failure_callback:
                 callback = callback_requests.DagCallbackRequest(
                     full_filepath=dag.fileloc,
                     dag_id=self.dag_id,
@@ -445,7 +445,7 @@ class DagRun(Base, LoggingMixin):
             self.set_state(State.SUCCESS)
             if execute_callbacks:
                 dag.handle_callback(self, success=True, reason='success', session=session)
-            else:
+            elif dag.on_success_callback:
                 callback = callback_requests.DagCallbackRequest(
                     full_filepath=dag.fileloc,
                     dag_id=self.dag_id,
@@ -460,7 +460,7 @@ class DagRun(Base, LoggingMixin):
             self.set_state(State.FAILED)
             if execute_callbacks:
                 dag.handle_callback(self, success=False, reason='all_tasks_deadlocked', session=session)
-            else:
+            elif dag.on_failure_callback:
                 callback = callback_requests.DagCallbackRequest(
                     full_filepath=dag.fileloc,
                     dag_id=self.dag_id,
