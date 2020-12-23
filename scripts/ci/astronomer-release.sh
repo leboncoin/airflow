@@ -21,7 +21,7 @@ echo "BRANCH: $BRANCH"
 # If the build is not a tag/release, build a dev version
 if [[ -z ${TAG:=} ]]; then
     echo
-    AIRFLOW_VERSION=$(awk '/version/{print $NF}' setup.py | tr -d \')
+    AIRFLOW_VERSION=$(awk '/version/{print $NF; exit}' setup.py | tr -d \')
     export AIRFLOW_VERSION
     echo "Current Version is: ${AIRFLOW_VERSION}"
 
