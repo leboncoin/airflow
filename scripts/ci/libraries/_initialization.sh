@@ -176,8 +176,8 @@ function initialization::initialize_base_variables() {
     readonly INSTALLED_EXTRAS
 
     # default version of PIP USED (This has to be < 20.3 until https://github.com/apache/airflow/issues/12838 is solved)
-    PIP_VERSION=${PIP_VERSION:="20.2.4"}
-    export PIP_VERSION
+    AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION:="20.2.4"}
+    export AIRFLOW_PIP_VERSION
 
     # We also pin version of wheel used to get consistent builds
     WHEEL_VERSION=${WHEEL_VERSION:="0.36.1"}
