@@ -172,6 +172,7 @@ function initialization::initialize_base_variables() {
         "sqlite"
         "sftp"
         "slack"
+        "sqlite"
         "ssh"
     )
     export INSTALLED_PROVIDERS
