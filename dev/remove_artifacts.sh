@@ -43,7 +43,8 @@ fi
 readonly GITHUB_TOKEN
 
 function github_api_call() {
-    curl --silent --location --user "${GITHUB_USER}:${GITHUB_TOKEN}" "$@"
+    curl curl --connect-timeout 60 --max-time 60 \
+        --silent --location --user "${GITHUB_USER}:${GITHUB_TOKEN}" "$@"
 }
 
 # A temporary file which receives HTTP response headers.
