@@ -27,6 +27,7 @@ assists users migrating to a new version.
 **Table of contents**
 
 - [Master](#master)
+- [Airflow 2.0.0](#airflow-200)
 - [Airflow 2.0.0b1](#airflow-200b1)
 - [Airflow 2.0.0a1](#airflow-200a1)
 - [Airflow 1.10.14](#airflow-11014)
@@ -52,6 +53,15 @@ assists users migrating to a new version.
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Master
+
+### Default `[celery] worker_concurrency` is changed to `16`
+
+The default value for `[celery] worker_concurrency` was `16` for Airflow <2.0.0.
+However, it was unintentionally changed to `8` in 2.0.0.
+
+From Airflow 2.0.1, we revert to the old default of `16`.
+
+## Airflow 2.0.0
 
 ### The experimental REST API is disabled by default
 
