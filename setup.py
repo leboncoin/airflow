@@ -224,6 +224,8 @@ azure = [
     'azure-mgmt-containerinstance>=1.5.0,<2.0',
     'azure-mgmt-datalake-store>=0.5.0',
     'azure-mgmt-resource>=2.2.0',
+    'azure-storage-blob>=12.7.0',
+    'azure-storage-common>=2.1.0',
     'azure-storage-file>=2.1.0',
 ]
 cassandra = [
@@ -422,20 +424,10 @@ slack = [
     'slackclient>=2.0.0,<3.0.0',
 ]
 snowflake = [
-    # The `azure` provider uses legacy `azure-storage` library, where `snowflake` uses the
-    # newer and more stable versions of those libraries. Most of `azure` operators and hooks work
-    # fine together with `snowflake` because the deprecated library does not overlap with the
-    # new libraries except the `blob` classes. So while `azure` works fine for most cases
-    # blob is the only exception
-    # Solution to that is being worked on in https://github.com/apache/airflow/pull/12188
-    # once it is merged, we can move those two back to `azure` extra.
-    'azure-storage-blob',
-    'azure-storage-common',
-    # snowflake is not compatible with latest version.
-    # This library monkey patches the requests library, so SSL is broken globally.
-    # See: https://github.com/snowflakedb/snowflake-connector-python/issues/324
-    'requests<2.24.0',
-    'snowflake-connector-python>=1.5.2',
+    # Snowflake connector > 2.3.8 is needed because it has vendored-in, patched urllib and requests libraries
+    # In earlier versions of the snowflake library, monkey-patching the libraries caused other
+    # providers to fail (Google, Amazon etc.)
+    'snowflake-connector-python>=2.3.8',
     'snowflake-sqlalchemy>=1.1.0',
 ]
 spark = [
