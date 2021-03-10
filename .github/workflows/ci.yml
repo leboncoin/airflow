@@ -404,7 +404,7 @@ jobs:
       - name: Create Python Wheel
         run: ./scripts/ci/astronomer-release.sh
       - name: "Deploy Python Wheel and tar.gz"
-        uses: actions-hub/gcloud@master
+        uses: actions-hub/gcloud@330.0.0
         env:
           APPLICATION_CREDENTIALS: ${{secrets.ASTRONOMER_PROD}}
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
@@ -412,7 +412,7 @@ jobs:
           args: cp -a public-read -r ./dist/* gs://pip.astronomer.io/simple
           cli: gsutil
       - name: "Deploy '.build' file (containing deployed version number)"
-        uses: actions-hub/gcloud@master
+        uses: actions-hub/gcloud@330.0.0
         env:
           APPLICATION_CREDENTIALS: ${{secrets.ASTRONOMER_PROD}}
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
