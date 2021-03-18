@@ -894,10 +894,10 @@ jobs:
     timeout-minutes: 10
     name: "Publish wheels to Astronomer"
     runs-on: ubuntu-20.04
-    needs:
-       - tests-sqlite
-       - tests-postgres
-       - tests-kubernetes
+    # needs:
+    #    - tests-sqlite
+    #    - tests-postgres
+    #    - tests-kubernetes
     if: |
       (startsWith(github.ref, 'refs/tags/v1.10.15+astro') || github.ref == 'refs/heads/v1-10-15') &&
       github.event_name != 'pull_request'
