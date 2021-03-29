@@ -163,7 +163,7 @@ def list_py_file_paths(
     elif os.path.isfile(directory):
         file_paths = [str(directory)]
     elif os.path.isdir(directory):
-        find_dag_file_paths(directory, file_paths, safe_mode)
+        file_paths.extend(find_dag_file_paths(directory, safe_mode))
     if include_examples:
         from airflow import example_dags
 
@@ -177,8 +177,10 @@ def list_py_file_paths(
     return file_paths
 
 
-def find_dag_file_paths(directory: Union[str, "pathlib.Path"], file_paths: list, safe_mode: bool):
+def find_dag_file_paths(directory: Union[str, "pathlib.Path"], safe_mode: bool):
     """Finds file paths of all DAG files."""
+    file_paths = []
+
     for file_path in find_path_from_directory(str(directory), ".airflowignore"):
         try:
             if not os.path.isfile(file_path):
@@ -192,6 +194,8 @@ def find_dag_file_paths(directory: Union[str, "pathlib.Path"], file_paths: list,
             file_paths.append(file_path)
         except Exception:  # noqa pylint: disable=broad-except
             log.exception("Error while examining %s", file_path)
+
+    return file_paths
 
 
 COMMENT_PATTERN = re.compile(r"\s*#.*")
