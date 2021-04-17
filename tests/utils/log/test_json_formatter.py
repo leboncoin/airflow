@@ -20,6 +20,7 @@
 Module for all tests airflow.utils.log.json_formatter.JSONFormatter
 """
 import json
+import sys
 import unittest
 from logging import makeLogRecord
 
@@ -65,3 +66,20 @@ class TestJSONFormatter(unittest.TestCase):
         self.assertDictEqual(
             json.loads(json_fmt.format(log_record)), {"label": "value", "pod_extra": "useful_message"}
         )
+
+    def test_format_with_exception(self):
+        """
+        Test exception is included in the message when using JSONFormatter
+        """
+        try:
+            raise RuntimeError("message")
+        except RuntimeError:
+            exc_info = sys.exc_info()
+
+        log_record = makeLogRecord({"exc_info": exc_info, "message": "Some msg"})
+        json_fmt = JSONFormatter(json_fields=["message"])
+
+        log_fmt = json.loads(json_fmt.format(log_record))
+        assert "message" in log_fmt
+        assert "Traceback (most recent call last)" in log_fmt["message"]
+        assert 'raise RuntimeError("message")' in log_fmt["message"]
