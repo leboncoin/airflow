@@ -60,3 +60,15 @@ ACTION_CAN_USERINFO = "can_userinfo"
 ACTION_USERINFOEDIT = "userinfoedit"
 DEPRECATED_ACTION_CAN_DAG_READ = "can_dag_read"
 DEPRECATED_ACTION_CAN_DAG_EDIT = "can_dag_edit"
+
+DAG_PERMS = {ACTION_CAN_READ, ACTION_CAN_EDIT}
+
+
+def permission_name_for_dag(dag_id):
+    """Returns the permission name for a DAG id."""
+    if dag_id == RESOURCE_DAG:
+        return dag_id
+
+    if dag_id.startswith(RESOURCE_DAG_PREFIX):
+        return dag_id
+    return f"{RESOURCE_DAG_PREFIX}{dag_id}"
