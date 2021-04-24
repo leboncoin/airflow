@@ -540,7 +540,7 @@ class TestDagFileProcessorManager(unittest.TestCase):
     @pytest.mark.backend("mysql", "postgres")
     @pytest.mark.execution_timeout(30)
     def test_pipe_full_deadlock(self):
-        dag_filepath = TEST_DAG_FOLDER / "test_scheduler_dags.py"
+        dag_filepath = os.path.join(TEST_DAG_FOLDER, "test_scheduler_dags.py")
 
         child_pipe, parent_pipe = multiprocessing.Pipe()
 
