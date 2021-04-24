@@ -503,14 +503,15 @@ class TestKubernetesExecutor(unittest.TestCase):
 
 class TestKubernetesJobWatcher(unittest.TestCase):
     def setUp(self):
-        self.watcher = KubernetesJobWatcher(
-            namespace="airflow",
-            multi_namespace_mode=False,
-            watcher_queue=mock.MagicMock(),
-            resource_version="0",
-            scheduler_job_id="123",
-            kube_config=mock.MagicMock(),
-        )
+        with mock.patch("airflow.executors.kubernetes_executor.get_kube_client") as mock_client:
+            self.watcher = KubernetesJobWatcher(
+                namespace="airflow",
+                multi_namespace_mode=False,
+                watcher_queue=mock.MagicMock(),
+                resource_version="0",
+                scheduler_job_id="123",
+                kube_config=mock.MagicMock(),
+            )
         self.kube_client = mock.MagicMock()
         self.core_annotations = {
             "dag_id": "dag",
@@ -578,7 +579,19 @@ class TestKubernetesJobWatcher(unittest.TestCase):
         self.assert_watcher_queue_called_once_with_state(None)
 
     def test_process_status_running(self):
-        self.pod.status.phase = "Running"
+        self.pod.status = k8s.V1PodStatus(
+            phase="Running",
+            container_statuses=[
+                k8s.V1ContainerStatus(
+                    name='airflow',
+                    state=k8s.V1ContainerState(running=mock.MagicMock()),
+                    image='test-image',
+                    image_id=mock.ANY,
+                    ready=True,
+                    restart_count=0,
+                )
+            ],
+        )
         self.events.append({"type": 'MODIFIED', "object": self.pod})
 
         self._run()
