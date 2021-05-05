@@ -207,6 +207,8 @@ def configure_vars():
 
 def configure_orm(disable_connection_pool=False):
     """Configure ORM using SQLAlchemy"""
+    from airflow.utils.log.secrets_masker import mask_secret
+
     log.debug("Setting up DB connection pool (PID %s)", os.getpid())
     global engine
     global Session
@@ -222,6 +224,9 @@ def configure_orm(disable_connection_pool=False):
         connect_args = {}
 
     engine = create_engine(SQL_ALCHEMY_CONN, connect_args=connect_args, **engine_args)
+
+    mask_secret(engine.url.password)
+
     setup_event_handlers(engine)
 
     Session = scoped_session(
@@ -505,6 +510,12 @@ IS_K8S_OR_K8SCELERY_EXECUTOR = conf.get('core', 'EXECUTOR') in {
     executor_constants.KUBERNETES_EXECUTOR,
     executor_constants.CELERY_KUBERNETES_EXECUTOR,
 }
+
+HIDE_SENSITIVE_VAR_CONN_FIELDS = conf.getboolean('core', 'hide_sensitive_var_conn_fields')
+
+# By default this is off, but is automatically configured on when running task
+# instances
+MASK_SECRETS_IN_LOGS = False
 
 
 def run_with_db_retries(logger: logging.Logger, **kwargs):
