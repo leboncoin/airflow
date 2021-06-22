@@ -286,22 +286,24 @@ ARG CONTINUE_ON_PIP_CHECK_FAILURE="false"
 # Copy all install scripts here
 COPY scripts/docker/install*.sh /scripts/docker/
 
+# Copy compile_www_assets.sh install scripts here
+COPY scripts/docker/compile_www_assets.sh /scripts/docker/compile_www_assets.sh
+
 # hadolint ignore=SC2086, SC2010
 RUN if [[ ${INSTALL_FROM_DOCKER_CONTEXT_FILES} == "true" ]]; then \
         bash /scripts/docker/install_from_docker_context_files.sh; \
     elif [[ ${INSTALL_FROM_PYPI} == "true" ]]; then \
         bash /scripts/docker/install_airflow.sh; \
+    else \
+        # only compile assets if the prod image is build from sources
+        # otherwise they are already compiled-in
+        bash /scripts/docker/compile_www_assets.sh; \
     fi; \
     if [[ -n "${ADDITIONAL_PYTHON_DEPS}" ]]; then \
         bash /scripts/docker/install_additional_dependencies.sh; \
     fi; \
     find /root/.local/ -name '*.pyc' -print0 | xargs -0 rm -r || true ; \
     find /root/.local/ -type d -name '__pycache__' -print0 | xargs -0 rm -r || true
-
-# Copy compile_www_assets.sh install scripts here
-COPY scripts/docker/compile_www_assets.sh /scripts/docker/compile_www_assets.sh
-
-RUN bash /scripts/docker/compile_www_assets.sh
 
 # make sure that all directories and files in .local are also group accessible
 RUN find /root/.local -executable -print0 | xargs --null chmod g+x && \
