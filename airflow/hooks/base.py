@@ -23,6 +23,7 @@ from typing import Any, Dict, List
 from airflow.models.connection import Connection
 from airflow.typing_compat import Protocol
 from airflow.utils.log.logging_mixin import LoggingMixin
+from airflow.utils.log.secrets_masker import redact
 
 log = logging.getLogger(__name__)
 
@@ -70,8 +71,8 @@ class BaseHook(LoggingMixin):
                 conn.port,
                 conn.schema,
                 conn.login,
-                conn.password,
-                conn.extra_dejson,
+                redact(conn.password),
+                redact(conn.extra_dejson),
             )
         return conn
 
