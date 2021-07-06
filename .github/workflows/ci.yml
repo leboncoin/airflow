@@ -21,7 +21,7 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: '28 0 * * *'
   push:
-    branches: ['main', 'v[0-9]+-[0-9]+-test']
+    branches: ['main', 'v[0-9]+-[0-9]+-[0-9]']
     tags: ['v2.1.1\+astro.*']
   pull_request:
     branches: ['main', 'v[0-9]+-[0-9]+-test', 'v[0-9]+-[0-9]+-stable']
