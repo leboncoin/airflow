@@ -240,4 +240,3 @@ def test_mark_task_instance_state(test_app):
         dagrun.refresh_from_db(session=session)
         # dagrun should be set to RUNNING
         assert dagrun.get_state() == State.RUNNING
->>>>>>> 7432c4d7e... Fix TI success/failure links (#16233)
