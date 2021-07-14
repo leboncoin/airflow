@@ -36,7 +36,7 @@ from functools import reduce
 import kubernetes.client.models as k8s
 import yaml
 from kubernetes.client.api_client import ApiClient
-from airflow.contrib.kubernetes.pod import _extract_volume_mounts
+from airflow.contrib.kubernetes.pod import _extract_volume_mounts, _extract_volumes
 
 from airflow.exceptions import AirflowConfigException
 from airflow.version import version as airflow_version
@@ -262,7 +262,7 @@ class PodGenerator(object):
         self.spec.affinity = affinity
         self.spec.service_account_name = service_account_name
         self.spec.init_containers = init_containers
-        self.spec.volumes = volumes or []
+        self.spec.volumes = [v.to_k8s_client_obj() for v in _extract_volumes(volumes)] or []
         self.spec.node_selector = node_selectors
         self.spec.restart_policy = restart_policy
         self.spec.priority_class_name = priority_class_name
