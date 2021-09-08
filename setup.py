@@ -40,7 +40,7 @@ INSTALL_PROVIDERS_FROM_SOURCES = 'INSTALL_PROVIDERS_FROM_SOURCES'
 
 logger = logging.getLogger(__name__)
 
-version = '2.0.2.dev1+astro.5'
+version = '2.0.2+astro.5'
 
 my_dir = dirname(__file__)
 
