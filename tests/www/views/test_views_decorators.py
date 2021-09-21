@@ -16,13 +16,17 @@
 # specific language governing permissions and limitations
 # under the License.
 import urllib.parse
+from typing import List
+from unittest import mock
 
 import pytest
 
-from airflow.models import DagBag, Log
+from airflow.models import DagBag, DagRun, Log, TaskInstance
 from airflow.utils import dates, timezone
 from airflow.utils.state import State
 from airflow.utils.types import DagRunType
+from airflow.www import app
+from airflow.www.views import action_has_dag_edit_access
 from tests.test_utils.db import clear_db_runs
 from tests.test_utils.www import check_content_in_response
 
@@ -76,6 +80,11 @@ def dagruns(bash_dag, sub_dag, xcom_dag):
     yield bash_dagrun, sub_dagrun, xcom_dagrun
 
     clear_db_runs()
+
+
+@action_has_dag_edit_access
+def some_view_action_which_requires_dag_edit_access(*args) -> bool:
+    return True
 
 
 def _check_last_log(session, dag_id, event, execution_date):
@@ -150,3 +159,8 @@ def test_calendar(admin_client, dagruns):
     datestr = bash_dagrun.execution_date.date().isoformat()
     expected = rf'{{\"date\":\"{datestr}\",\"state\":\"running\",\"count\":1}}'
     check_content_in_response(expected, resp)
+
+
+def test_action_has_dag_edit_access_exception():
+    with pytest.raises(ValueError):
+        some_view_action_which_requires_dag_edit_access(None, "some_incorrect_value")
