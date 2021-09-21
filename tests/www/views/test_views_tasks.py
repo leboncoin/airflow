@@ -27,15 +27,18 @@ from airflow import settings
 from airflow.executors.celery_executor import CeleryExecutor
 from airflow.models import DagBag, DagModel, TaskInstance
 from airflow.models.dagcode import DagCode
+from airflow.security import permissions
 from airflow.ti_deps.dependencies_states import QUEUEABLE_STATES, RUNNABLE_STATES
 from airflow.utils import dates, timezone
 from airflow.utils.log.logging_mixin import ExternalLoggingMixin
 from airflow.utils.session import create_session
 from airflow.utils.state import State
 from airflow.utils.types import DagRunType
+from airflow.www.views import TaskInstanceModelView
+from tests.test_utils.api_connexion_utils import create_user, delete_roles, delete_user
 from tests.test_utils.config import conf_vars
 from tests.test_utils.db import clear_db_runs
-from tests.test_utils.www import check_content_in_response, check_content_not_in_response
+from tests.test_utils.www import check_content_in_response, check_content_not_in_response, client_with_login
 
 DEFAULT_DATE = dates.days_ago(2)
 
@@ -70,6 +73,32 @@ def init_dagruns(app, reset_dagruns):  # pylint: disable=unused-argument
     )
     yield
     clear_db_runs()
+
+
+@pytest.fixture(scope="module")
+def client_ti_without_dag_edit(app):
+    create_user(
+        app,
+        username="all_ti_permissions_except_dag_edit",
+        role_name="all_ti_permissions_except_dag_edit",
+        permissions=[
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_CREATE, permissions.RESOURCE_TASK_INSTANCE),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
+            (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE),
+            (permissions.ACTION_CAN_ACCESS_MENU, permissions.RESOURCE_TASK_INSTANCE),
+        ],
+    )
+
+    yield client_with_login(
+        app,
+        username="all_ti_permissions_except_dag_edit",
+        password="all_ti_permissions_except_dag_edit",
+    )
+
+    delete_user(app, username="all_ti_permissions_except_dag_edit")  # type: ignore
+    delete_roles(app)
 
 
 @pytest.mark.parametrize(
@@ -574,3 +603,45 @@ def test_show_external_log_redirect_link_with_external_log_handler(
         ctx = templates[0].local_context
         assert ctx['show_external_log_redirect']
         assert ctx['external_log_name'] == _ExternalHandler.LOG_NAME
+
+
+def _get_appbuilder_pk_string(model_view_cls, instance) -> str:
+    """Utility to get Flask-Appbuilder's string format "pk" for an object.
+
+    Used to generate requests to FAB action views without *too* much difficulty.
+    The implementation relies on FAB internals, but unfortunately I don't see
+    a better way around it.
+
+    Example usage::
+
+        >>> from airflow.www.views import TaskInstanceModelView
+        >>> ti = session.Query(TaskInstance).filter(...).one()
+        >>> pk = _get_appbuilder_pk_string(TaskInstanceModelView, ti)
+        >>> client.post("...", data={"action": "...", "rowid": pk})
+    """
+    pk_value = model_view_cls.datamodel.get_pk_value(instance)
+    return model_view_cls._serialize_pk_if_composite(model_view_cls, pk_value)
+
+
+@pytest.mark.parametrize(
+    "action",
+    ["clear", "set_success", "set_failed", "set_running"],
+    ids=["clear", "success", "failed", "running"],
+)
+def test_set_task_instance_action_permission_denied(session, client_ti_without_dag_edit, action):
+    task_id = "runme_0"
+
+    # Set the state to success for clearing.
+    ti_q = session.query(TaskInstance).filter(TaskInstance.task_id == task_id)
+    ti_q.update({"state": State.SUCCESS})
+    session.commit()
+
+    # Send a request to clear.
+    rowid = _get_appbuilder_pk_string(TaskInstanceModelView, ti_q.one())
+    expected_message = f"Access denied for dag_id {ti_q.one().dag_id}"
+    resp = client_ti_without_dag_edit.post(
+        "/taskinstance/action_post",
+        data={"action": action, "rowid": [rowid]},
+        follow_redirects=True,
+    )
+    check_content_in_response(expected_message, resp)
