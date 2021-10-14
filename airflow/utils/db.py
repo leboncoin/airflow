@@ -705,22 +705,20 @@ def check_run_id_null(session) -> Iterable[str]:
 
     dag_run = metadata.tables["dag_run"]
 
-    for colname in ('run_id', 'dag_id', 'execution_date'):
+    col = dag_run.columns.get('run_id')
+    if col is None:
+        return
 
-        col = dag_run.columns.get(colname)
-        if col is None:
-            continue
+    if not col.nullable:
+        return
 
-        if not col.nullable:
-            continue
-
-        num = session.query(dag_run).filter(col.is_(None)).count()
-        if num > 0:
-            yield (
-                f'The {dag_run.name} table has {num} row{"s" if num != 1 else ""} with a NULL value in '
-                f'{col.name!r}. You must manually correct this problem (possibly by deleting the problem '
-                'rows).'
-            )
+    num = session.query(dag_run).filter(col.is_(None)).count()
+    if num > 0:
+        yield (
+            f'The {dag_run.name} table has {num} row{"s" if num != 1 else ""} with a NULL value in '
+            f'{col.name!r}. You must manually correct this problem (possibly by deleting the problem '
+            'rows).'
+        )
     session.rollback()
 
 
