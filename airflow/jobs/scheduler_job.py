@@ -1853,6 +1853,7 @@ class SchedulerJob(BaseJob):  # pylint: disable=too-many-instance-attributes
                     num_failed = (
                         session.query(SchedulerJob)
                         .filter(
+                            SchedulerJob.job_type == "SchedulerJob",
                             SchedulerJob.state == State.RUNNING,
                             SchedulerJob.latest_heartbeat < (timezone.utcnow() - timedelta(seconds=timeout)),
                         )
