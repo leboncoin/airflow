@@ -460,7 +460,7 @@ class KubernetesExecutor(BaseExecutor, LoggingMixin):
                 pod_generator.make_safe_label_value(task.dag_id),
                 pod_generator.make_safe_label_value(task.task_id),
                 pod_generator.datetime_to_label_safe_datestring(task.execution_date),
-                pod_generator.make_safe_label_value(str(self.scheduler_job_id)),
+                pod_generator.make_safe_label_value(str(task.queued_by_job_id)),
             )
             # pylint: enable=protected-access
             kwargs = dict(label_selector=dict_string)
