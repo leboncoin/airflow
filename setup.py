@@ -41,7 +41,7 @@ PY39 = sys.version_info >= (3, 9)
 
 logger = logging.getLogger(__name__)
 
-version = '2.2.0+astro.4'
+version = '2.2.0+astro.5'
 
 my_dir = dirname(__file__)
 
