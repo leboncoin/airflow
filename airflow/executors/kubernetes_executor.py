@@ -458,13 +458,12 @@ class KubernetesExecutor(BaseExecutor, LoggingMixin):
         self.log.info('When executor started up, found %s queued task instances', len(queued_tasks))
 
         for task in queued_tasks:
-
             self.log.debug("Checking task %s", task)
             dict_string = "dag_id={},task_id={},execution_date={},airflow-worker={}".format(
                 pod_generator.make_safe_label_value(task.dag_id),
                 pod_generator.make_safe_label_value(task.task_id),
                 pod_generator.datetime_to_label_safe_datestring(task.execution_date),
-                pod_generator.make_safe_label_value(str(self.scheduler_job_id)),
+                pod_generator.make_safe_label_value(str(task.queued_by_job_id)),
             )
 
             kwargs = dict(label_selector=dict_string)
