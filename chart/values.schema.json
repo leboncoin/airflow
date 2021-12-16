@@ -1698,7 +1698,6 @@
                 "resources": {
                     "description": "Resources for the create user job pod",
                     "type": "object",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
                     "default": {},
                     "examples": [
                         {
@@ -1758,7 +1757,6 @@
                 "resources": {
                     "description": "Resources for the migrate database job pod",
                     "type": "object",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
                     "default": {},
                     "examples": [
                         {
@@ -3050,7 +3048,6 @@
                 "resources": {
                     "description": "Resources for or cleanup pods",
                     "type": "object",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
                     "default": {},
                     "examples": [
                         {
