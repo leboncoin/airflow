@@ -49,8 +49,8 @@ def my_py_command(ds, **kwargs):
 
 
 my_templated_command = """
-    echo " 'foo was passed in via Airflow CLI Test command with value {{ params.foo }} "
-    echo " 'miff was passed in via BashOperator with value {{ params.miff }} "
+    echo "'foo' was passed in via Airflow CLI Test command with value '$FOO'"
+    echo "'miff' was passed in via BashOperator with value '$MIFF'"
 """
 
 run_this = PythonOperator(
@@ -65,6 +65,7 @@ also_run_this = BashOperator(
     task_id='also_run_this',
     bash_command=my_templated_command,
     params={"miff": "agg"},
+    env={"FOO": "{{ params.foo }}", "MIFF": "{{ params.miff }}"},
     dag=dag,
 )
 
