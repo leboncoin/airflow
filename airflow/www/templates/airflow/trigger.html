@@ -42,7 +42,7 @@
       To access configuration in your DAG use <code>{{ '{{ dag_run.conf }}' }}</code>.
     </p>
     <button type="submit" class="btn btn-primary">Trigger</button>
-    <button type="button" class="btn" onclick="location.href = '{{ origin }}'; return false">Cancel</button>
+    <a class="btn" href="{{ origin }}">Cancel</a>
   </form>
 {% endblock %}
 
