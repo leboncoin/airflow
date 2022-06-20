@@ -2139,7 +2139,8 @@ class TaskInstance(Base, LoggingMixin):
             # Use the DAG's get_template_env() to set force_sandboxed. Don't add
             # the flag to the function on task object -- that function can be
             # overridden, and adding a flag breaks backward compatibility.
-            dag = self.task.get_dag()
+            
+            dag = self.task.dag if self.task.has_dag() else None
             if dag:
                 jinja_env = dag.get_template_env(force_sandboxed=True)
             else:
