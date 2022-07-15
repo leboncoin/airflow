@@ -454,7 +454,7 @@ function updateNodesStates(tis) {
   for (const nodeId of g.nodes()) {
     const { elem } = g.node(nodeId);
     if (!elem) {
-      return;
+      continue;
     }
     elem.setAttribute('class', `node enter ${getNodeState(nodeId, tis)}`);
     elem.setAttribute('data-toggle', 'tooltip');
