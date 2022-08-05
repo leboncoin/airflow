@@ -1919,7 +1919,7 @@ class TaskInstance(Base, LoggingMixin):
 
         self.end_date = timezone.utcnow()
         self.set_duration()
-        Stats.incr(f'operator_failures_{self.task.task_type}')
+        Stats.incr(f'operator_failures_{self.operator}')
         Stats.incr('ti_failures')
         if not test_mode:
             session.add(Log(State.FAILED, self))
@@ -1943,7 +1943,8 @@ class TaskInstance(Base, LoggingMixin):
 
         task = None
         try:
-            task = self.task.unmap()
+            if self.task:
+                task = self.task.unmap()
         except Exception:
             self.log.error("Unable to unmap task, can't determine if we need to send an alert email or not")
 
@@ -1985,6 +1986,9 @@ class TaskInstance(Base, LoggingMixin):
             # If a task is cleared when running, it goes into RESTARTING state and is always
             # eligible for retry
             return True
+        if not self.task:
+            # Couldn't load the task, don't know number of retries, guess:
+            return self.try_number <= self.max_tries
 
         return self.task.retries and self.try_number <= self.max_tries
 
