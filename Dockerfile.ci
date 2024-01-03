@@ -192,7 +192,7 @@ install_mysql_client() {
         exit 1
     fi
 
-    export_key "467B942D3A79BD29" "mysql"
+    export_key "B7B3B788A8D3785C" "mysql"
 
     echo
     echo "${COLOR_BLUE}Installing Oracle MySQL client version ${MYSQL_LTS_VERSION}: ${1}${COLOR_RESET}"
